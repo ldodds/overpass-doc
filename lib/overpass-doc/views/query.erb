@@ -25,20 +25,88 @@
 					  	</dd>
 					  <% end %>
 					</dl>
-					<textarea id="sparql" cols="120" rows="50"><%= query.query %></textarea>
+					<textarea id="overpass" cols="120" rows="50"><%= query.query %></textarea>
 					<script>
-					  var editor = CodeMirror.fromTextArea(document.getElementById("sparql"), {
+            CodeMirror.defineMIME("text/x-overpassQL", {
+              name: "clike",
+              keywords: (function (str) {
+                var r = {};
+                var a = str.split(" ");
+                for (var i = 0; i < a.length; i++) r[a[i]] = true;
+                return r;
+              })(
+                "out json xml custom popup timeout maxsize bbox" + // initial declarations
+                  " date diff adiff" + //attic declarations
+                  " foreach" + // block statements
+                  " relation rel way node is_in area around user uid newer changed poly pivot nwr derived" + // queries
+                  " out meta body skel tags ids count qt asc" + // actions
+                  " center bb geom" // geometry types
+                //+"r w n br bw" // recursors
+              )
+            });
+            CodeMirror.defineMIME("text/x-overpassXML", "xml");
+            CodeMirror.defineMode("xml+mustache", function (config) {
+              return CodeMirror.multiplexingMode(
+                CodeMirror.multiplexingMode(CodeMirror.getMode(config, "xml"), {
+                  open: "{{",
+                  close: "}}",
+                  mode: CodeMirror.getMode(config, "text/plain"),
+                  delimStyle: "mustache"
+                }),
+                {
+                  open: "{{style:",
+                  close: "}}",
+                  mode: CodeMirror.getMode(config, "text/css"),
+                  delimStyle: "mustache"
+                }
+              );
+            });
+            CodeMirror.defineMode("ql+mustache", function (config) {
+              return CodeMirror.multiplexingMode(
+                CodeMirror.multiplexingMode(
+                  CodeMirror.getMode(config, "text/x-overpassQL"),
+                  {
+                    open: "{{",
+                    close: "}}",
+                    mode: CodeMirror.getMode(config, "text/plain"),
+                    delimStyle: "mustache"
+                  }
+                ),
+                {
+                  open: "{{style:",
+                  close: "}}",
+                  mode: CodeMirror.getMode(config, "text/css"),
+                  delimStyle: "mustache"
+                }
+              );
+            });
+					  var editor = CodeMirror.fromTextArea(document.getElementById("overpass"), {
 						    height: "250px",
 						    width: "250px",
 						    autofocus: false,
 						    readOnly: true,
-
-						    parserfile: "parsesparql.js",
-						    stylesheet: "/sparqlcolors.css",
-						    path: "js/",
-						    lineNumbers: true
+                mode: "ql+mustache",
+						    lineNumbers: true,
+                lineWrapping: true,
+                matchBrackets: true,
+                closeTagEnabled: true,
+                closeTagIndent: [
+                  "osm-script",
+                  "query",
+                  "union",
+                  "foreach",
+                  "difference"
+                ]
 						  });
 					</script>
+          <h3>Test This Query</h3>
+					<p>Try this query in Overpass Turbo:</p>
+					<ul>
+					    <li>
+					      <a href="https://overpass-turbo.eu/?Q=<%= query.query_string %>&R" target="_blank">https://overpass-turbo.eu/</a>
+					    </li>
+					</ul>
+
               </div>
           </div><!--/row-->
         </div><!--/span-->

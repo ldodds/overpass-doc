@@ -1,0 +1,44 @@
+<div class="container">
+      <div class="hero-unit">
+        	<h1><%= _title %></h1>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <p><%= _description %></p>
+        </div>
+      </div>
+
+	  <% if _overview %>
+      	<div class="row">
+        	<div class="span12">
+        		<h3 id="overview">Overview</h3>
+          		<%= _overview %>
+        	</div>
+      	</div>
+	  <% end %>
+
+      <div class="row">
+        <div class="span12">
+          <h3>Queries</h3>
+          <p>This set of documentation covers <strong><%= @queries.size %></strong> queries</p>
+          <table class="table">
+            <thead>
+            	<tr>
+            		<th>Title</th><th>Source Path</th>
+            	</tr>
+            </thead>
+            <tbody>
+           		<% @queries.each do |query| %>
+           		<tr>
+           		  <td><a href="<%= query.output_filename %>"><%= query.title %></a></td><td><code><%= query.path %></code></td>
+           		</tr>
+           		<% end %>
+			</tbody>
+          </table>
+        </div>
+      </div>
+
+	<hr>
+	<footer class="footer">Generated with <a href="http://github.com/ldodds/overpass-doc">overpass-doc</a>.</footer>
+</div>

@@ -1,15 +1,11 @@
 module OverpassDoc
 
-  #Wrapper for Overpass query
   class Query
 
     attr_reader :path, :query, :raw_query, :package
 
     ANNOTATIONS = {
       :author => {
-        :multi => true
-      },
-      :see => {
         :multi => true
       },
       :tag => {
@@ -37,7 +33,6 @@ module OverpassDoc
       @raw_query = query
       @title = @path
       @description = ""
-      @prefixes = {}
 
       ["author", "tag"].each do |annotation|
         if package[annotation]

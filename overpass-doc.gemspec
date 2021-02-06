@@ -23,5 +23,6 @@ Gem::Specification.new do |s|
 #  s.test_file = "tests/ts_sparql_doc.rb"
   s.add_dependency("json", "~> 2.5.1")
   s.add_dependency("redcarpet", "~> 3.5.1")
-#  s.add_development_dependency("fakefs", "~> 1.3.2")
+  s.add_development_dependency("fakefs", "~> 1.3.2")
+  s.add_development_dependency("rspec", "~> 3.0")
 end

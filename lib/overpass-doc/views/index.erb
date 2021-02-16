@@ -1,17 +1,12 @@
 <div class="container">
-      <div class="hero-unit">
+      <div class="bg-light p-5 rounded">
         	<h1><%= _title %></h1>
-      </div>
-
-      <div class="row">
-        <div class="span12">
-          <p><%= _description %></p>
-        </div>
+          <p class="lead"><%= _description %></p>
       </div>
 
 	  <% if _overview %>
       	<div class="row">
-        	<div class="span12">
+        	<div class="col">
         		<h3 id="overview">Overview</h3>
           		<%= _overview %>
         	</div>
@@ -19,7 +14,7 @@
 	  <% end %>
 
       <div class="row">
-        <div class="span12">
+        <div class="col">
           <h3>Queries</h3>
           <p>This set of documentation covers <strong><%= @queries.size %></strong> queries</p>
           <table class="table">
@@ -39,6 +34,4 @@
         </div>
       </div>
 
-	<hr>
-	<footer class="footer">Generated with <a href="http://github.com/ldodds/overpass-doc">overpass-doc</a>.</footer>
 </div>

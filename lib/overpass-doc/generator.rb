@@ -56,8 +56,11 @@ module OverpassDoc
         markup = File.read( File.join(@dir, file) )
         renderer = Redcarpet::Render::HTML.new({})
         markdown = Redcarpet::Markdown.new(renderer, {})
+        template = ERB.new( read_template(:extra) )
+        _content = markdown.render(markup)
         html = layout do
-          markdown.render(markup)
+          b = binding
+          template.result(b)
         end
         file = File.join(@output_dir, file.gsub(".md", ".html"))
         File.open(file, "w") do |f|

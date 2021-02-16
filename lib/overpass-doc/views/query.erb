@@ -18,10 +18,10 @@
 					  <dt>Link</dt>
 					  <dd><a href="<%= see %>"><%= see %></a></dd>
 					  <% end %>
-					  <% if query.tag.length > 0 %>
+					  <% if query.tags.length > 0 %>
 					  	<dt>Tag</dt>
 					  	<dd>
-					  	   <%= query.tag.map{|x| "<span property=\"subject\">#{x}</span>" }.join(", ") %>
+					  	   <%= query.tags.map{|x| "<span property=\"subject\">#{x}</span>" }.join(", ") %>
 					  	</dd>
 					  <% end %>
 					</dl>

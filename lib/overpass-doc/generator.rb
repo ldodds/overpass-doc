@@ -48,12 +48,7 @@ module OverpassDoc
       if !File.exists?(@output_dir)
         FileUtils.mkdir_p(@output_dir)
       end
-      Dir.new(asset_dir).each() do |file|
-        if file != "." and file != ".."
-          FileUtils.cp( File.join(asset_dir, file),
-            File.join(@output_dir, file) )
-        end
-      end
+      FileUtils.cp_r( "#{@asset_dir}/.", @output_dir )
     end
 
     def copy_extra_files()

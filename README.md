@@ -26,9 +26,9 @@ All simple documentation lines at the start of a query will be treated as its de
 
 ```
 /*
-	This is a description
-	of my query. It has multiple
-	lines
+This is a description
+of my query. It has multiple
+lines
 */
 ```
 
@@ -36,10 +36,10 @@ Special tag can be used to specify other metadata, such as the title of a query:
 
 ```
 /*
-	This is a description
-	of my query. It has multiple
-	lines
-  @title This is the title
+This is a description
+of my query. It has multiple
+lines
+@title This is the title
 */
 ```
 
@@ -54,13 +54,13 @@ Here's an example that uses all these:
 
 ```
 /*
- Specifies a bounding box to query for glacier data in a specific area of
- Switzerland.
+Specifies a bounding box to query for glacier data in a specific area of
+Switzerland.
 
- @title Extract glacier features as a specific location
- @author Leigh Dodds
- @see [Upper Grindelwald Glacier](https://en.wikipedia.org/wiki/Upper_Grindelwald_Glacier)
- @tag glacier
+@title Extract glacier features as a specific location
+@author Leigh Dodds
+@see [Upper Grindelwald Glacier](https://en.wikipedia.org/wiki/Upper_Grindelwald_Glacier)
+@tag glacier
 */
 [out:json][timeout:25][bbox:46.5914,8.0828,46.6301, 8.1674];
 // gather results
@@ -99,10 +99,10 @@ The following example of a package.json file shows how to provide a title and a 
 of a package of files. The title and description will automatically be injected into the documentation.
 
 ```
-	{
-	 "title": "Sample OSM Queries",
-	 "description": "A useful selection of queries for beginners"
-	}
+{
+ "title": "Sample OSM Queries",
+ "description": "A useful selection of queries for beginners"
+}
 ```
 
 It is common for a collection of queries to be written by the same person, be tagged in the same
@@ -113,11 +113,11 @@ specified in the `package.json` file.
 The following example shows how to do this:
 
 ```
-	{
-   "title": "Sample OSM Queries",
- 	 "description": "A useful selection of queries for beginners"
-	 "author": ["Leigh Dodds"],
-	}
+{
+ "title": "Sample OSM Queries",
+ "description": "A useful selection of queries for beginners"
+ "author": ["Leigh Dodds"],
+}
 ```
 
 Note that because `@author`, `@tag` and `@see` are all multi-valued annotations, their values
@@ -126,11 +126,13 @@ must be specified as a JSON array.
 The `package.json` file can also be used to indicate that extra files in the query directory should be
 processed and included in the documentation. E.g.:
 
-	{
-    "title": "Sample OSM Queries",
-  	 "description": "A useful selection of queries for beginners"
-	 "extra-files": ["more-info.md"]
-	}
+```
+{
+  "title": "Sample OSM Queries",
+   "description": "A useful selection of queries for beginners"
+ "extra-files": ["more-info.md"]
+}
+```
 
 This will trigger `overpass-doc` to process the `more-info.md` file as Markdown, converting it to
 `more-info.html` which is added to the output directory. A link to `more-info` will be automatically

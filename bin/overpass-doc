@@ -3,5 +3,10 @@ $:.unshift File.join(File.dirname(__FILE__), "..", "lib")
 require 'rubygems'
 require 'overpass-doc'
 
-generator = OverpassDoc::Generator.new(ARGV[0], ARGV[1])
-generator.run()
+if ARGV[0] == nil
+  puts "Usage: overpass-doc path-to-queries [path-to-output-dir]"
+else
+  output = ARGV[1] || "overpass-doc"
+  generator = OverpassDoc::Generator.new(ARGV[0], output)
+  generator.run()
+end

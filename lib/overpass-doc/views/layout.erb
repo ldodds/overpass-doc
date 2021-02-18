@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="h-100">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -55,7 +55,7 @@
                 <% if @package["extra-files"] %>
         		  	  <% @package["extra-files"].each do |file| %>
                     <li class="nav-item">
-                      <a class="nav-link" href="<%= file.gsub(".md", ".html") %>"><%= file.gsub(".md", "") %></a>
+                      <a class="nav-link" href="<%= file.gsub(".md", ".html") %>"><%= file.gsub(".md", "").capitalize %></a>
                     </li>
         		  	  <% end %>
         		  	<% end %>

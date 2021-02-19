@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col">
           <h3>Queries</h3>
-          <p>This set of documentation covers <strong><%= @queries.size %></strong> queries</p>
+          <p>This set of documentation covers <strong><%= queries.size %></strong> queries</p>
           <table class="table table-hover">
             <thead>
             	<tr>
@@ -24,7 +24,7 @@
             	</tr>
             </thead>
             <tbody>
-           		<% @queries.each do |query| %>
+           		<% queries.each do |query| %>
            		<tr>
            		  <td><a href="<%= query.output_filename %>"><%= query.title %></a></td><td><code><%= query.path %></code></td>
            		</tr>

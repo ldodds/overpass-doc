@@ -9,38 +9,31 @@ module OverpassDoc
       @output_dir = output_dir
       @asset_dir = asset_dir || File.join( File.dirname( __FILE__ ) , "assets")
       @view_dir = view_dir || File.join( File.dirname( __FILE__ ) , "views")
-      @package = parse_package()
-      @queries = parse_queries()
+      @package = OverpassDoc::Package.new(@dir)
+      @templates = {}
+    end
+
+    def run
+      copy_assets
+      @package.generate(self)
+    rescue => e
+      puts e
+      puts e.backtrace
     end
 
     def read_template(name)
-      File.read(File.join(@view_dir, "#{name}.erb"))
+      return @templates[name] if @templates[name]
+      @templates[name] = File.read(File.join(@view_dir, "#{name}.erb"))
+      return @templates[name]
     end
 
-    def parse_package()
-      package = File.join(@dir, "package.json")
-      if File.exists?(package)
-        return JSON.load( File.open(package) )
+    def write_file(package, filename, content)
+      if File.dirname(filename) != "."
+        FileUtils.mkdir_p File.join(@output_dir, File.dirname(filename))
       end
-      Hash.new
-    end
-
-    def parse_queries()
-      queries = []
-      Dir.glob("#{@dir}/*.op") do |file|
-        content = File.read(file)
-        path = file.gsub("#{@dir}/", "")
-        queries << OverpassDoc::Query.new(path, content, @package)
+      File.open(File.join(@output_dir, filename), "w") do |f|
+        f.puts(content)
       end
-      queries.sort! {|x,y| x.title <=> y.title }
-      queries
-    end
-
-    def run()
-      copy_assets()
-      generate_index()
-      generate_query_pages()
-      copy_extra_files()
     end
 
     def copy_assets(asset_dir=@asset_dir)
@@ -49,73 +42,6 @@ module OverpassDoc
         FileUtils.mkdir_p(@output_dir)
       end
       FileUtils.cp_r( "#{@asset_dir}/.", @output_dir )
-    end
-
-    def copy_extra_files()
-      @package["extra-files"].each do |file|
-        markup = File.read( File.join(@dir, file) )
-        renderer = Redcarpet::Render::HTML.new({})
-        markdown = Redcarpet::Markdown.new(renderer, {})
-        template = ERB.new( read_template(:extra) )
-        _content = markdown.render(markup)
-        html = layout do
-          b = binding
-          template.result(b)
-        end
-        file = File.join(@output_dir, file.gsub(".md", ".html"))
-        File.open(file, "w") do |f|
-          f.puts html
-        end
-      end if @package["extra-files"]
-    end
-
-    def get_overview()
-      overview = File.join(@dir, "overview.md")
-      if File.exists?( overview )
-        markup = File.read( overview )
-        renderer = Redcarpet::Render::HTML.new({})
-        markdown = Redcarpet::Markdown.new(renderer, {})
-        return markdown.render(markup)
-      end
-      nil
-    end
-
-    def generate_index()
-      $stderr.puts("Generating index.html");
-      _title = @package["title"] || "Overpass Query Documentation"
-      _overview = get_overview()
-      _description = @package["description"] || ""
-      template = ERB.new( read_template(:index) )
-      html = layout do
-        b = binding
-        template.result(b)
-      end
-      File.open(File.join(@output_dir, "index.html"), "w") do |f|
-        f.puts(html)
-      end
-    end
-
-    def layout
-      b = binding
-      _title = @package["title"] || "Overpass Query Documentation"
-      _overview = get_overview()
-      ERB.new( read_template(:layout) ).result(b)
-    end
-
-    def generate_query_pages()
-      template = ERB.new( read_template(:query) )
-      @queries.each do |query|
-        $stderr.puts("Generating docs for #{query.path}")
-        File.open( File.join(@output_dir, query.output_filename), "w" ) do |f|
-          b = binding
-          _title = @package["title"] || "Overpass Query Documentation"
-          _overview = get_overview()
-          html = layout do
-            template.result(b)
-          end
-          f.puts( html )
-        end
-      end
     end
 
   end

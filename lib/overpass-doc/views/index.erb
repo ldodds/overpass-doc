@@ -1,14 +1,14 @@
 <div class="container">
       <div class="bg-light p-5 rounded">
-        	<h1><%= _title %></h1>
-          <p class="lead"><%= _description %></p>
+        	<h1><%= title %></h1>
+          <p class="lead"><%= description %></p>
       </div>
 
-	  <% if _overview %>
+	  <% if overview %>
       	<div class="row">
         	<div class="col">
         		<h3 id="overview">Overview</h3>
-          		<%= _overview %>
+          		<%= overview %>
         	</div>
       	</div>
 	  <% end %>
@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col">
           <h3>Queries</h3>
-          <p>This set of documentation covers <strong><%= @queries.size %></strong> queries</p>
+          <p>This set of documentation covers <strong><%= queries.size %></strong> queries</p>
           <table class="table table-hover">
             <thead>
             	<tr>
@@ -24,7 +24,7 @@
             	</tr>
             </thead>
             <tbody>
-           		<% @queries.each do |query| %>
+           		<% queries.each do |query| %>
            		<tr>
            		  <td><a href="<%= query.output_filename %>"><%= query.title %></a></td><td><code><%= query.path %></code></td>
            		</tr>

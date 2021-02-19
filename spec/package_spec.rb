@@ -4,8 +4,11 @@ module OverpassDoc
     before(:each) do
       FakeFS.activate!
       FileUtils.mkdir_p("/in")
-
+      FileUtils.mkdir_p("/in/nested")
       File.open("/in/test.op", "w") do |f|
+        f.puts "node({{bbox}}); out geom;"
+      end
+      File.open("/in/nested/query.op", "w") do |f|
         f.puts "node({{bbox}}); out geom;"
       end
     end
@@ -17,7 +20,7 @@ module OverpassDoc
     end
 
     it "parses queries" do
-      expect( package.queries.size ).to eql 1
+      expect( package.queries.size ).to eql 2
     end
 
     it "parses package file" do

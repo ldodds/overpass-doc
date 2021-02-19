@@ -27,7 +27,7 @@ module OverpassDoc
 
     def parse_queries()
       queries = []
-      Dir.glob("#{@dir}/*.op") do |file|
+      Dir.glob("#{@dir}/**/*.op") do |file|
         content = File.read(file)
         path = file.gsub("#{@dir}/", "")
         queries << OverpassDoc::Query.new(path, content, @metadata)
@@ -46,7 +46,7 @@ module OverpassDoc
           template.result(b)
         end
         filename = file.gsub(".md", ".html")
-        generator.write_file(filename, html)
+        generator.write_file(self, filename, html)
       end if @metadata["extra-files"]
     end
 
@@ -64,7 +64,7 @@ module OverpassDoc
 
     def generate_index(generator)
       $stderr.puts("Generating index.html")
-      generator.write_file("index.html", render_with_layout(generator, :index))
+      generator.write_file(self, "index.html", render_with_layout(generator, :index))
     end
 
     def render_markdown(src)
@@ -103,7 +103,7 @@ module OverpassDoc
       @queries.each do |query|
         $stderr.puts("Generating docs for #{query.path}")
         html = render_with_layout(generator, :query, {query: query})
-        generator.write_file(query.output_filename, html)
+        generator.write_file(self, query.output_filename, html)
       end
     end
 

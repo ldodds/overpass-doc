@@ -14,8 +14,12 @@ RSpec.describe OverpassDoc::Generator, fakefs: true do
     FileUtils.mkdir_p("/lib/assets/nested/nested.js")
 
     FileUtils.mkdir_p("/in")
+    FileUtils.mkdir_p("/in/nested")
 
     File.open("/in/test.op", "w") do |f|
+      f.puts "node({{bbox}}); out geom;"
+    end
+    File.open("/in/nested/query.op", "w") do |f|
       f.puts "node({{bbox}}); out geom;"
     end
   end
@@ -42,8 +46,20 @@ RSpec.describe OverpassDoc::Generator, fakefs: true do
     end
     generator = OverpassDoc::Generator.new("/in", "/out", "/lib/views", "/lib/assets")
     generator.run
-    expect( File.exists?("/out/index.html") ).to eql(true)
     expect( File.read("/out/index.html") ).to match("<p>Overview</p>")
+  end
+
+  it "renders all the query files" do
+    File.open("/lib/views/layout.erb", "w") do |f|
+      f.puts "<%= yield %>"
+    end
+    File.open("/lib/views/query.erb", "w") do |f|
+      f.puts "<%= query.query %>"
+    end
+    generator = OverpassDoc::Generator.new("/in", "/out", "/lib/views", "/lib/assets")
+    generator.run
+    expect( File.read("/out/test.html") ).to include("node({{bbox}}); out geom;")
+    expect( File.read("/out/nested/query.html") ).to include("node({{bbox}}); out geom;")
   end
 
 end

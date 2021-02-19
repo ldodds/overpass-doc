@@ -27,7 +27,10 @@ module OverpassDoc
       return @templates[name]
     end
 
-    def write_file(filename, content)
+    def write_file(package, filename, content)
+      if File.dirname(filename) != "."
+        FileUtils.mkdir_p File.join(@output_dir, File.dirname(filename))
+      end
       File.open(File.join(@output_dir, filename), "w") do |f|
         f.puts(content)
       end

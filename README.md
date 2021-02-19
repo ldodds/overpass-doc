@@ -48,7 +48,7 @@ The full list of supported tags is:
 * `@title`: should have a single value. Last title tag wins
 * `@author`: author(s) of the query.
 * `@see`: add one or more links
-* `@tag`: add a tag to a query. Multiple values
+* `@tags`: add a tag to a query. Multiple values
 
 Here's an example that uses all these:
 
@@ -59,8 +59,8 @@ Switzerland.
 
 @title Extract glacier features as a specific location
 @author Leigh Dodds
-@see [Upper Grindelwald Glacier](https://en.wikipedia.org/wiki/Upper_Grindelwald_Glacier)
-@tag glacier
+@see https://en.wikipedia.org/wiki/Upper_Grindelwald_Glacier
+@tags glacier
 */
 [out:json][timeout:25][bbox:46.5914,8.0828,46.6301, 8.1674];
 // gather results
@@ -107,7 +107,7 @@ of a package of files. The title and description will automatically be injected 
 
 It is common for a collection of queries to be written by the same person, be tagged in the same
 way, or be useful against the same collection of endpoints. Rather than repeatedly apply the
-`@author`, `@tag` and `@endpoint` annotations to all queries in a package, default values can be
+`@author`, `@tags` and `@endpoint` annotations to all queries in a package, default values can be
 specified in the `package.json` file.
 
 The following example shows how to do this:
@@ -120,7 +120,7 @@ The following example shows how to do this:
 }
 ```
 
-Note that because `@author`, `@tag` and `@see` are all multi-valued annotations, their values
+Note that because `@author`, `@tags` and `@see` are all multi-valued annotations, their values
 must be specified as a JSON array.
 
 The `package.json` file can also be used to indicate that extra files in the query directory should be

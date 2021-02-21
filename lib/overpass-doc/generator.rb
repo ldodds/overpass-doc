@@ -7,15 +7,15 @@ module OverpassDoc
     def initialize(dir, output_dir, view_dir=nil, asset_dir=nil)
       @dir = dir
       @output_dir = output_dir
+      @templates = {}
       @asset_dir = asset_dir || File.join( File.dirname( __FILE__ ) , "assets")
       @view_dir = view_dir || File.join( File.dirname( __FILE__ ) , "views")
-      @package = OverpassDoc::Package.new(@dir)
-      @templates = {}
     end
 
     def run
+      @package = OverpassDoc::Package.new(self, @dir)
       copy_assets
-      @package.generate(self)
+      @package.generate
     rescue => e
       puts e
       puts e.backtrace
@@ -31,7 +31,7 @@ module OverpassDoc
       if File.dirname(filename) != "."
         FileUtils.mkdir_p File.join(@output_dir, File.dirname(filename))
       end
-      File.open(File.join(@output_dir, filename), "w") do |f|
+      File.open(File.join(@output_dir, File.path(package.dir).dup.gsub(@dir, ""), filename), "w") do |f|
         f.puts(content)
       end
     end

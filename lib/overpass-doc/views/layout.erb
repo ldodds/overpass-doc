@@ -4,15 +4,14 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title><%= title %></title>
 
-    <script src="jquery.js" type="text/javascript"></script>
-	  <script src="bootstrap.min.js" type="text/javascript"></script>
-    <script src="codemirror.js" type="text/javascript"></script>
-	  <script src="mode/clike/clike.js" type="text/javascript"></script>
-	  <script src="util/multiplex.js" type="text/javascript"></script>
+    <%= script_link("jquery.js") %>
+    <%= script_link("bootstrap.min.js") %>
+    <%= script_link("codemirror.js") %>
+    <%= script_link("mode/clike/clike.js") %>
+    <%= script_link("util/multiplex.js") %>
 
-    <link rel="stylesheet" href="codemirror.css">
-    <link href="bootstrap.min.css" rel="stylesheet" />
-    <link href="codemirror.css" rel="stylesheet" />
+    <%= stylesheet("bootstrap.min.css") %>
+    <%= stylesheet("codemirror.css") %>
 
     <style type="text/css">
       .bd-placeholder-img {

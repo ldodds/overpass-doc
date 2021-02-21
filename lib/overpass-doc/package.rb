@@ -1,18 +1,28 @@
+require "pathname"
+
 module OverpassDoc
   #A directory containing a package.json, query files and supporting assets
   class Package
-    attr_reader :dir, :queries, :metadata
+    include Helpers
 
-    def initialize(src_dir)
+    attr_reader :dir, :metadata, :queries, :children
+
+    def initialize(generator, src_dir, parent=nil)
       @dir = src_dir
+      @generator = generator
+      @parent = parent
       @metadata = parse_metadata()
       @queries = parse_queries()
+      @children = parse_nested_packages()
     end
 
-    def generate(generator)
-      generate_index(generator)
-      generate_query_pages(generator)
-      copy_extra_files(generator)
+    def generate
+      generate_index
+      generate_query_pages
+      copy_extra_files
+      @children.each do |child|
+        child.generate
+      end
     end
 
     private
@@ -25,9 +35,9 @@ module OverpassDoc
       Hash.new
     end
 
-    def parse_queries()
+    def parse_queries
       queries = []
-      Dir.glob("#{@dir}/**/*.op") do |file|
+      Dir.glob("#{@dir}/*.op") do |file|
         content = File.read(file)
         path = file.gsub("#{@dir}/", "")
         queries << OverpassDoc::Query.new(path, content, @metadata)
@@ -36,17 +46,26 @@ module OverpassDoc
       queries
     end
 
-    def copy_extra_files(generator)
+    def parse_nested_packages
+      children = []
+      dirs = Pathname.new(@dir).children.select { |c| c.directory? }.collect { |p| p.to_s }
+      dirs.each do |dir|
+        children << OverpassDoc::Package.new(@generator, dir, self)
+      end
+      children
+    end
+
+    def copy_extra_files
       @metadata["extra-files"].each do |file|
         markup = File.read( File.join(@dir, file) )
         _content = render_markdown(markup)
-        template = ERB.new( generator.read_template(:extra) )
-        html = layout(generator) do
+        template = ERB.new( @generator.read_template(:extra) )
+        html = layout do
           b = binding
           template.result(b)
         end
         filename = file.gsub(".md", ".html")
-        generator.write_file(self, filename, html)
+        @generator.write_file(self, filename, html)
       end if @metadata["extra-files"]
     end
 
@@ -62,9 +81,9 @@ module OverpassDoc
       nil
     end
 
-    def generate_index(generator)
+    def generate_index
       $stderr.puts("Generating index.html")
-      generator.write_file(self, "index.html", render_with_layout(generator, :index))
+      @generator.write_file(self, "index.html", render_with_layout(:index))
     end
 
     def render_markdown(src)
@@ -73,21 +92,21 @@ module OverpassDoc
       markdown.render(src)
     end
 
-    def render_with_layout(generator, template, variables={})
-      template = ERB.new( generator.read_template(template) )
+    def render_with_layout(template, variables={})
+      template = ERB.new( @generator.read_template(template) )
       b = binding
       variables.each do |key, value|
         b.local_variable_set(key, value)
       end
-      html = layout(generator) do
+      html = layout do
         template.result(b)
       end
       return html
     end
 
-    def layout(generator)
+    def layout
       b = binding
-      ERB.new( generator.read_template(:layout) ).result(b)
+      ERB.new( @generator.read_template(:layout) ).result(b)
     end
 
     #available in template
@@ -99,11 +118,11 @@ module OverpassDoc
       @metadata["description"] || ""
     end
 
-    def generate_query_pages(generator)
+    def generate_query_pages
       @queries.each do |query|
         $stderr.puts("Generating docs for #{query.path}")
-        html = render_with_layout(generator, :query, {query: query})
-        generator.write_file(self, query.output_filename, html)
+        html = render_with_layout(:query, {query: query})
+        @generator.write_file(self, query.output_filename, html)
       end
     end
 

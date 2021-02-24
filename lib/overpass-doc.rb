@@ -5,6 +5,7 @@ require 'json'
 require 'fileutils'
 require 'redcarpet'
 
+require 'overpass-doc/helpers'
 require 'overpass-doc/query'
 require 'overpass-doc/package'
 require 'overpass-doc/generator'

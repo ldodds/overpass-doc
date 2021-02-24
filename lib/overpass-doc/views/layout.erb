@@ -4,15 +4,18 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title><%= title %></title>
 
-    <script src="jquery.js" type="text/javascript"></script>
-	  <script src="bootstrap.min.js" type="text/javascript"></script>
-    <script src="codemirror.js" type="text/javascript"></script>
-	  <script src="mode/clike/clike.js" type="text/javascript"></script>
-	  <script src="util/multiplex.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="codemirror.css">
-    <link href="bootstrap.min.css" rel="stylesheet" />
-    <link href="codemirror.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <%= stylesheet("codemirror.css") %>
+
+    <%= script_link("codemirror.js") %>
+    <%= script_link("mode/clike/clike.js") %>
+    <%= script_link("util/multiplex.js") %>
+
 
     <style type="text/css">
       .bd-placeholder-img {
@@ -41,12 +44,27 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
           <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"><%= title %></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <% if child? %>
+              <a class="navbar-brand" href="/"><%= @generator.package.title %> | <%= title %></a>
+            <% else %>
+              <a class="navbar-brand" href="/"><%= title %></a>
+            <% end %>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-              <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Packages
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="<%= child? ? "../index.html" : "index.html" %>">Home</a>
+                    <% generator.package.children.each do |child| %>
+                      <a class="dropdown-item" href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
+                    <% end %>
+                  </div>
+                </li>
                 <% if overview %>
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="index.html#overview">Overview</a>

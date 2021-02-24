@@ -2,7 +2,7 @@ module OverpassDoc
 
   class Generator
 
-    attr_reader :dir, :queries, :package
+    attr_reader :dir, :queries, :package, :output_dir
 
     def initialize(dir, output_dir, view_dir=nil, asset_dir=nil)
       @dir = dir
@@ -28,8 +28,8 @@ module OverpassDoc
     end
 
     def write_file(package, filename, content)
-      if File.dirname(filename) != "."
-        FileUtils.mkdir_p File.join(@output_dir, File.dirname(filename))
+      if !File.exist?(File.join(@output_dir, package.path))
+        FileUtils.mkdir_p File.join(@output_dir, package.path)
       end
       File.open(File.join(@output_dir, File.path(package.dir).dup.gsub(@dir, ""), filename), "w") do |f|
         f.puts(content)

@@ -67,7 +67,8 @@ module OverpassDoc
       children = []
       dirs = Pathname.new(@dir).children.select { |c| c.directory? }.collect { |p| p.to_s }
       dirs.each do |dir|
-        children << OverpassDoc::Package.new(@generator, dir, self)
+
+        children << OverpassDoc::Package.new(@generator, dir, self) if !dir.include?(".git")
       end
       children
     end

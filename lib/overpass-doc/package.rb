@@ -5,7 +5,7 @@ module OverpassDoc
   class Package
     include Helpers
 
-    attr_reader :dir, :metadata, :queries, :children
+    attr_reader :dir, :metadata, :queries, :children, :generator
 
     def initialize(generator, src_dir, parent=nil)
       @dir = src_dir
@@ -14,6 +14,23 @@ module OverpassDoc
       @metadata = parse_metadata()
       @queries = parse_queries()
       @children = parse_nested_packages()
+    end
+
+    def child?
+      @parent != nil
+    end
+
+    #available in template
+    def title
+      @metadata["title"] || "Overpass Query Documentation"
+    end
+
+    def description
+      @metadata["description"] || ""
+    end
+
+    def path
+      File.path(@dir).dup.gsub(@generator.dir, "")
     end
 
     def generate
@@ -107,15 +124,6 @@ module OverpassDoc
     def layout
       b = binding
       ERB.new( @generator.read_template(:layout) ).result(b)
-    end
-
-    #available in template
-    def title
-      @metadata["title"] || "Overpass Query Documentation"
-    end
-
-    def description
-      @metadata["description"] || ""
     end
 
     def generate_query_pages

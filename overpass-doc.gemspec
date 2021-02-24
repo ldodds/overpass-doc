@@ -5,7 +5,7 @@ RDOC_OPTS = ['--quiet', '--title', 'Overpass QL Doc Reference', '--main', 'READM
 
 Gem::Specification.new do |s|
   s.name = "overpass-doc"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.licenses = "CC0-1.0"
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = ">= 2.5.0"

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    overpass-doc (0.0.2)
+    overpass-doc (0.0.3)
       json (~> 2.5.1)
       redcarpet (~> 3.5.1)
 

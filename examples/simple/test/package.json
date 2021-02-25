@@ -5,5 +5,6 @@
     "files": [
       { "label": "More", "file": "more-info.md" }
     ]
-   }
+  },
+  "description": "This is a nested collection"
 }

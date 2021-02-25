@@ -33,6 +33,10 @@ module OverpassDoc
       File.path(@dir).dup.gsub(@generator.dir, "")
     end
 
+    def parent
+      @parent
+    end
+
     def generate
       generate_index
       generate_query_pages
@@ -74,15 +78,15 @@ module OverpassDoc
     end
 
     def copy_extra_files
-      @metadata["extra-files"].each do |file|
-        markup = File.read( File.join(@dir, file) )
+      @metadata["extra-files"]["files"].each do |file|
+        markup = File.read( File.join(@dir, file["file"]) )
         _content = render_markdown(markup)
         template = ERB.new( @generator.read_template(:extra) )
         html = layout do
           b = binding
           template.result(b)
         end
-        filename = file.gsub(".md", ".html")
+        filename = file["file"].gsub(".md", ".html")
         @generator.write_file(self, filename, html)
       end if @metadata["extra-files"]
     end
@@ -131,6 +135,7 @@ module OverpassDoc
       @queries.each do |query|
         $stderr.puts("Generating docs for #{query.path}")
         html = render_with_layout(:query, {query: query})
+        @generator.write_file(self, query.path, query.raw_query)
         @generator.write_file(self, query.output_filename, html)
       end
     end

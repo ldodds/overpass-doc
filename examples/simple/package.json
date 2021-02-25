@@ -2,5 +2,10 @@
  "title": "Overpass Doc Example Queries",
  "description": "A collection of example overpass ql queries to demonstrate the capabilities of overpass-doc",
  "author": ["Leigh Dodds"],
- "extra-files": ["more-info.md"]
+ "extra-files": {
+   "label": "About",
+   "files": [
+     { "label": "Information", "file": "more-info.md" }
+   ]
+  }
 }

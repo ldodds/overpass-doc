@@ -45,38 +45,52 @@
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
           <div class="container-fluid">
             <% if child? %>
-              <a class="navbar-brand" href="/"><%= @generator.package.title %> | <%= title %></a>
+              <span class="navbar-brand" href="/"><%= @generator.package.title %> | <%= title %></span>
             <% else %>
-              <a class="navbar-brand" href="/"><%= title %></a>
+              <span class="navbar-brand" href="/"><%= title %></span>
             <% end %>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Packages
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<%= child? ? "../index.html" : "index.html" %>">Home</a>
-                    <% generator.package.children.each do |child| %>
-                      <a class="dropdown-item" href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
-                    <% end %>
-                  </div>
-                </li>
-                <% if overview %>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.html#overview">Overview</a>
+                <% if child? && parent.metadata["extra-files"] %>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= parent.metadata["extra-files"]["label"] %>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <% parent.metadata["extra-files"]["files"].each do |file| %>
+                          <a class="dropdown-item" href="<%= file["file"].gsub(".md", ".html") %>"><%= file["label"] %></a>
+            		  	  <% end %>
+                    </div>
                   </li>
-                <% end %>
-                <% if metadata["extra-files"] %>
-        		  	  <% metadata["extra-files"].each do |file| %>
-                    <li class="nav-item">
-                      <a class="nav-link" href="<%= file.gsub(".md", ".html") %>"><%= file.gsub(".md", "").capitalize %></a>
-                    </li>
-        		  	  <% end %>
         		  	<% end %>
+                <% if metadata["extra-files"] %>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= metadata["extra-files"]["label"] %>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <% metadata["extra-files"]["files"].each do |file| %>
+                          <a class="dropdown-item" href="<%= file["file"].gsub(".md", ".html") %>"><%= file["label"] %></a>
+            		  	  <% end %>
+                    </div>
+                  </li>
+        		  	<% end %>
+              </ul>
+              <ul class="navbar-nav">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Packages
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="<%= child? ? "../index.html" : "index.html" %>">Home</a>
+                      <% generator.package.children.each do |child| %>
+                        <a class="dropdown-item" href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
+                      <% end %>
+                    </div>
+                  </li>
               </ul>
             </div>
           </div>

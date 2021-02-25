@@ -1,3 +1,9 @@
 {
-  "title": "Nested"
+  "title": "Nested",
+  "extra-files": {
+    "label": "Nested Info",
+    "files": [
+      { "label": "More", "file": "more-info.md" }
+    ]
+   }
 }

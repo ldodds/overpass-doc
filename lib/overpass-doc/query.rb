@@ -61,7 +61,7 @@ module OverpassDoc
     end
 
     def query_string
-      CGI::escape( @query )
+      CGI::escape( @raw_query )
     end
 
     def extract_annotation(line)
@@ -79,40 +79,32 @@ module OverpassDoc
         raise "Invalid query"
       end
 
-
-      query_lines = []
-      header = true
+      @query = @raw_query.gsub(match[0], "")
       description = false
       description_lines = []
 
       match[:multi_content].split("\n").each do |line|
-        if ( header )
-          annotation, value = extract_annotation(line)
-          if ( annotation )
-            config = ANNOTATIONS[ annotation.intern ]
-            if config
-              if config[:multi]
-                val = instance_variable_get("@#{annotation}")
-                val << value.strip
-              else
-                instance_variable_set("@#{annotation}", value.strip)
-              end
-              description = true
+        annotation, value = extract_annotation(line)
+        if ( annotation )
+          config = ANNOTATIONS[ annotation.intern ]
+          if config
+            if config[:multi]
+              val = instance_variable_get("@#{annotation}")
+              val << value.strip
             else
-              $stderr.puts("Ignoring unknown annotation: @#{annotation}")
+              instance_variable_set("@#{annotation}", value.strip)
             end
+            description = true
           else
-            if (description == false)
-              description_lines << line.lstrip
-            end
+            $stderr.puts("Ignoring unknown annotation: @#{annotation}")
           end
         else
-          header = false
-          query_lines << line
+          if (description == false)
+            description_lines << line.lstrip
+          end
         end
       end
       @description = description_lines.join("\n") unless description_lines.empty?
-
     end
   end
 

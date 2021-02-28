@@ -5,7 +5,7 @@ RDOC_OPTS = ['--quiet', '--title', 'Overpass QL Doc Reference', '--main', 'READM
 
 Gem::Specification.new do |s|
   s.name = "overpass-doc"
-  s.version = "0.0.3"
+  s.version = "0.0.4"
   s.licenses = "CC0-1.0"
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = ">= 2.5.0"
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.description = "Generates HTML documentation for a collection of OSM Overpass queries"
   s.author = "Leigh Dodds"
   s.email = 'leigh@ldodds.com'
-#  s.homepage = 'http://github.com/ldodds/overpass-doc'
+  s.homepage = 'http://github.com/ldodds/overpass-doc'
   s.files = PKG_FILES
   s.require_path = "lib"
   s.bindir = "bin"

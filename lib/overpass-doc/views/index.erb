@@ -39,6 +39,7 @@
 
       <div class="row">
         <div class="col">
+          <% if queries.any? %>
           <h3>Queries</h3>
           <p>This package contains the following <strong><%= queries.size %></strong> <%= queries.size > 1 ? 'queries' : 'query' %></p>
           <table class="table table-hover">
@@ -55,6 +56,7 @@
             </tbody>
            		<% end %>
           </table>
+          <% end %>
         </div>
       </div>
 

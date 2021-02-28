@@ -58,7 +58,7 @@ module OverpassDoc
 
     def parse_queries
       queries = []
-      Dir.glob("#{@dir}/*.op") do |file|
+      Dir.glob("#{@dir}/*.osm") do |file|
         content = File.read(file)
         path = file.gsub("#{@dir}/", "")
         queries << OverpassDoc::Query.new(path, content, @metadata)

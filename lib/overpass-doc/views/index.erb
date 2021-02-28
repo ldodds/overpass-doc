@@ -1,63 +1,43 @@
-<div class="container">
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-auto">
+      <% if children.any? %>
+        <h4>Collections</h4>
+        <ul>
+          <% children.each do |child| %>
+            <li>
+              <a href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <% if queries.any? %>
+        <h4>Queries</h4>
+        <ul>
+          <% queries.each do |query| %>
+            <li>
+              <a href="<%= query.output_filename %>"><%= query.title %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+
+    <div class="col">
       <div class="bg-light p-5 rounded">
         	<h1><%= title %></h1>
           <p class="lead"><%= description %></p>
       </div>
-
-	  <% if overview %>
-      	<div class="row">
-        	<div class="col">
-          	<%= overview %>
+      <% if overview %>
+        	<div class="row">
+          	<div class="col">
+            	<%= overview %>
+          	</div>
         	</div>
-      	</div>
-	  <% end %>
+  	  <% end %>
+    </div>
 
-      <div class="row">
-        <div class="col">
-          <% if children.any? %>
-            <h3>Collections</h3>
-
-            <p>This package contains the following collections of queries.</p>
-            <table class="table table-hover">
-              <thead>
-                <th>Title</th><th>Description</th>
-              </thead>
-              <tbody>
-                <% children.each do |child| %>
-                  <tr>
-                    <td>
-                      <a href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
-                    </td>
-                    <td><%= child.description %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <% if queries.any? %>
-          <h3>Queries</h3>
-          <p>This package contains the following <strong><%= queries.size %></strong> <%= queries.size > 1 ? 'queries' : 'query' %></p>
-          <table class="table table-hover">
-            <thead>
-            	<tr>
-            		<th>Title</th><th>Source Path</th>
-            	</tr>
-            </thead>
-            <tbody>
-           		<% queries.each do |query| %>
-           		<tr>
-           		  <td><a href="<%= query.output_filename %>"><%= query.title %></a></td><td><code><%= query.path %></code></td>
-           		</tr>
-            </tbody>
-           		<% end %>
-          </table>
-          <% end %>
-        </div>
-      </div>
-
+  </div>
 </div>

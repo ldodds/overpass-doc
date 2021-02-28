@@ -17,7 +17,7 @@ These features are described in the next sections.
 
 ### Overpass QL Documentation Extensions
 
-`overpass-doc` processes your Overpass queries, saved as text files with a `.op` extension.
+`overpass-doc` processes your Overpass queries, saved as text files with a `.osm` extension.
 
 It then looks for a comment at the top of the query. Like Javadoc, rdoc and
 similar tools, the content of those comments are used to provide metadata

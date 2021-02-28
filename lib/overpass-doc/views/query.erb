@@ -1,16 +1,44 @@
-<div class="container">
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-auto">
+      <% if children.any? %>
+        <h4>Collections</h4>
+        <ul>
+          <% children.each do |child| %>
+            <li>
+              <a href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <% if queries.any? %>
+        <h4>Queries</h4>
+        <ul>
+          <% queries.each do |query| %>
+            <li>
+              <a href="<%= query.output_filename %>"><%= query.title %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+
+    <div class="col-6">
       <div class="row">
         <div class="col">
-          <div class="row">
-              <div id="query-viewer">
-					<h2 property="title"><%= query.title %></h2>
-					<% if query.description %>
-						<p property="description"><%= query.description(true) %></p>
-					<% end %>
-
-          <h4>Query</h4>
-
-					<textarea id="overpass" cols="120" rows="50"><%= query.query %></textarea>
+          <h2 property="title"><%= query.title %></h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+					<textarea id="overpass" cols="120"><%= query.query %></textarea>
+          <div class="float-right">
+            <a class="btn btn-primary" href="https://overpass-turbo.eu/?Q=<%= query.query_string %>&R" target="_blank">
+                <i class="bi bi-play"></i>Run
+            </a>
+          </div>
 					<script>
             CodeMirror.defineMIME("text/x-overpassQL", {
               name: "clike",
@@ -66,8 +94,6 @@
               );
             });
 					  var editor = CodeMirror.fromTextArea(document.getElementById("overpass"), {
-						    height: "250px",
-						    width: "250px",
 						    autofocus: false,
 						    readOnly: true,
                 mode: "ql+mustache",
@@ -85,40 +111,63 @@
 						  });
 					</script>
 
-          <h4>Options</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <% if query.description %>
+						<p property="description"><%= query.description(true) %></p>
+					<% end %>
 
-					<ul>
-					    <li>
-					      <a href="https://overpass-turbo.eu/?Q=<%= query.query_string %>&R" target="_blank">Run in Overpass Turbo</a>
-					    </li>
-              <li>
-                <a href="<%= query.path %>">Download query</a>
-              </li>
-					</ul>
+          <table class="table">
+            <thead>
+              <th>Property</th><th>Value</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Source File</td><td><a href="<%= query.path %>"><code><%= query.path %></code></a></td>
+              </tr>
+              <tr>
+                <td>Links</td>
+                <td>
+                  <% if query.see.any? %>
+                    <ul class="list-unstyled">
+                      <% query.see.each do |see| %>
+          					       <li><a href="<%= see %>"><%= see %></a></li>
+          					  <% end %>
+                    </ul>
+                  <% end %>
+                </td>
+              </tr>
+              <tr>
+                <td>Authors</td>
+                <td>
+                  <% if query.author.any? %>
+                    <ul class="list-unstyled">
+                      <% query.author.each do |author| %>
+          					       <li><span><%= author %></span></li>
+          					  <% end %>
+                    </ul>
+                  <% end %>
+                </td>
+              </tr>
+              <tr>
+                <td>Tags</td>
+                <td>
+                  <% if query.tags.any? %>
+                    <ul class="list-unstyled">
+                      <% query.tags.each do |tag| %>
+          					       <li><span><%= tag %></span></li>
+          					  <% end %>
+                    </ul>
+                  <% end %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-          <h4>Metadata</h4>
-          <dl>
-					  <dt>Source File</dt>
-					  <dd><code><%= query.path %></code></dd>
-					  <% query.author.each do |author| %>
-					  <dt>Author</dt>
-					  <dd><span property="creator"><%= author %></span></dd>
-					  <% end %>
-					  <% query.see.each do |see| %>
-					  <dt>Link</dt>
-					  <dd><a href="<%= see %>"><%= see %></a></dd>
-					  <% end %>
-					  <% if query.tags.length > 0 %>
-					  	<dt>Tag</dt>
-					  	<dd>
-					  	   <%= query.tags.map{|x| "<span property=\"subject\">#{x}</span>" }.join(", ") %>
-					  	</dd>
-					  <% end %>
-					</dl>
-
-              </div>
-          </div><!--/row-->
-        </div><!--/span-->
-      </div><!--/row-->
-
+  </div>
 </div>

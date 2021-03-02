@@ -125,45 +125,45 @@
 
           <table class="table">
             <tbody>
-              <tr>
-                <td>Links</td>
-                <td>
-                  <% if query.see.any? %>
+              <% if query.see.any? %>
+                <tr>
+                  <td>Links</td>
+                  <td>
                     <ul class="list-unstyled">
                       <% query.see.each do |see| %>
-          					       <li><a href="<%= see %>"><%= see %></a></li>
-          					  <% end %>
+                           <li><a href="<%= see %>"><%= see %></a></li>
+                      <% end %>
                     </ul>
-                  <% end %>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              <% end %>
               <tr>
                 <td>Source File</td><td><a href="<%= query.path %>"><code><%= query.path %></code></a></td>
               </tr>
-              <tr>
-                <td>Authors</td>
-                <td>
-                  <% if query.author.any? %>
-                    <ul class="list-unstyled">
-                      <% query.author.each do |author| %>
-          					       <li><span><%= author %></span></li>
-          					  <% end %>
-                    </ul>
-                  <% end %>
-                </td>
-              </tr>
-              <tr>
-                <td>Tags</td>
-                <td>
-                  <% if query.tags.any? %>
+              <% if query.author.any? %>
+                <tr>
+                  <td>Authors</td>
+                  <td>
+                      <ul class="list-unstyled">
+                        <% query.author.each do |author| %>
+            					       <li><span><%= author %></span></li>
+            					  <% end %>
+                      </ul>
+                  </td>
+                </tr>
+              <% end %>
+              <% if query.tags.any? %>
+                <tr>
+                  <td>Tags</td>
+                  <td>
                     <ul class="list-unstyled">
                       <% query.tags.each do |tag| %>
-          					       <li><span><%= tag %></span></li>
-          					  <% end %>
+                           <li><span><%= tag %></span></li>
+                      <% end %>
                     </ul>
-                  <% end %>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

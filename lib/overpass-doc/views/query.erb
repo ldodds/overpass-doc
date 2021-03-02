@@ -3,7 +3,7 @@
 
     <div class="col-md-auto">
       <% if child? %>
-        <h5><%= title %></h5>
+        <h5><a href="index.html" class="text-decoration-none"><%= title %></a></h5>
       <% end %>
 
       <% if children.any? %>
@@ -38,7 +38,7 @@
         <div class="col">
 					<textarea id="overpass" cols="120"><%= query.query %></textarea>
           <div class="float-right">
-            <a class="btn btn-primary btn-sm" href="https://overpass-turbo.eu/?Q=<%= query.query_string %>&R" target="_blank">
+            <a class="btn btn-success btn-sm" href="https://overpass-turbo.eu/?Q=<%= query.query_string %>&R" target="_blank">
                 <i class="bi bi-play"></i>Run
             </a>
           </div>

@@ -3,11 +3,11 @@
 
     <div class="col-md-auto">
       <% if child? %>
-        <h4><%= title %></h4>
+        <h5><%= title %></h5>
       <% end %>
 
       <% if children.any? %>
-        <h4>Collections</h4>
+        <h5>Collections</h5>
         <ul class="list-unstyled">
           <% children.each do |child| %>
             <li>
@@ -19,9 +19,9 @@
 
       <% if queries.any? %>
         <ul class="list-unstyled">
-          <% queries.each do |query| %>
-            <li>
-              <a href="<%= query.output_filename %>"><%= query.title %></a>
+          <% queries.each do |q| %>
+            <li class="<%= q.path == query.path ? 'bg-color' : ''%>" >
+              <a href="<%= q.output_filename %>"><%= q.title %></a>
             </li>
           <% end %>
         </ul>

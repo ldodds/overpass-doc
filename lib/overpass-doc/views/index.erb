@@ -3,7 +3,7 @@
 
     <div class="col-md-auto">
       <% if children.any? %>
-        <h4>Collections</h4>
+        <h5>Collections</h5>
         <ul class="list-unstyled">
           <% children.each do |child| %>
             <li>
@@ -30,7 +30,7 @@
           <% if child? %>
         	 <h1><%= title %></h1>
           <% end %>
-          <p class="lead"><%= description %></p>
+          <h3><%= description %></h3>
       </div>
       <% if overview %>
         	<div class="row">

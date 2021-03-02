@@ -4,7 +4,7 @@
     <div class="col-md-auto">
       <% if children.any? %>
         <h4>Collections</h4>
-        <ul>
+        <ul class="list-unstyled">
           <% children.each do |child| %>
             <li>
               <a href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
@@ -15,7 +15,7 @@
 
       <% if queries.any? %>
         <h4>Queries</h4>
-        <ul>
+        <ul class="list-unstyled">
           <% queries.each do |query| %>
             <li>
               <a href="<%= query.output_filename %>"><%= query.title %></a>
@@ -96,6 +96,7 @@
 					  var editor = CodeMirror.fromTextArea(document.getElementById("overpass"), {
 						    autofocus: false,
 						    readOnly: true,
+                viewportMargin: Infinity,
                 mode: "ql+mustache",
 						    lineNumbers: true,
                 lineWrapping: true,
@@ -120,13 +121,7 @@
 					<% end %>
 
           <table class="table">
-            <thead>
-              <th>Property</th><th>Value</th>
-            </thead>
             <tbody>
-              <tr>
-                <td>Source File</td><td><a href="<%= query.path %>"><code><%= query.path %></code></a></td>
-              </tr>
               <tr>
                 <td>Links</td>
                 <td>
@@ -138,6 +133,9 @@
                     </ul>
                   <% end %>
                 </td>
+              </tr>
+              <tr>
+                <td>Source File</td><td><a href="<%= query.path %>"><code><%= query.path %></code></a></td>
               </tr>
               <tr>
                 <td>Authors</td>

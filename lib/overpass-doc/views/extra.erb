@@ -1,4 +1,31 @@
-<div class="container">
- <%= _content %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-auto">
+      <% if children.any? %>
+        <h5>Collections</h5>
+        <ul class="list-unstyled">
+          <% children.each do |child| %>
+            <li>
+              <a href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
 
+      <% if queries.any? %>
+        <h5>Queries</h5>
+        <ul class="list-unstyled">
+          <% queries.each do |query| %>
+            <li>
+              <a href="<%= query.output_filename %>"><%= query.title %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+
+    <div class="col-6">
+      <%= _content %>
+    </div>
+  </div>
 </div>

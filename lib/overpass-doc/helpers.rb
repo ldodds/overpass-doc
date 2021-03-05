@@ -2,12 +2,18 @@ module OverpassDoc
   module Helpers
 
     def asset_path(resource)
-      if File.path(@dir) == @generator.dir
-        resource
+      resource = resource[1..-1] if resource.start_with?("/")
+      if child?
+        "../" + resource
       else
-        dirs = File.path(@dir).split("/").size - 2
-        return Array.new(dirs, "../").join + resource
+        resource
       end
+      # if File.path(@dir) == @generator.dir
+      #   resource
+      # else
+      #   dirs = File.path(@dir).split("/").size - 2
+      #   return Array.new(dirs, "../").join + resource
+      # end
     end
 
     def script_link(resource)

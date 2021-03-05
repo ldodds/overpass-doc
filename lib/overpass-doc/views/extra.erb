@@ -6,7 +6,7 @@
         <ul class="list-unstyled">
           <% children.each do |child| %>
             <li>
-              <a href="<%= child? ? "../" : "./" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
+              <a href="<%= child? ? "../" : "" %><%= asset_path( child.path ) %>/index.html"><%= child.title %></a>
             </li>
           <% end %>
         </ul>

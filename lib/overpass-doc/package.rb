@@ -120,14 +120,17 @@ module OverpassDoc
       variables.each do |key, value|
         b.local_variable_set(key, value)
       end
-      html = layout do
+      html = layout(variables) do
         template.result(b)
       end
       return html
     end
 
-    def layout
+    def layout(variables=nil)
       b = binding
+      variables.each do |key, value|
+        b.local_variable_set(key, value)
+      end if variables
       ERB.new( @generator.read_template(:layout) ).result(b)
     end
 

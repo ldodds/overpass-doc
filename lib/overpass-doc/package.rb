@@ -1,6 +1,27 @@
 require "pathname"
 
 module OverpassDoc
+
+  class CustomHTML < Redcarpet::Render::HTML
+    def table(header, body)
+      "<table class='table table-bordered table-hover'>#{header}#{body}</table>"
+    end
+
+    # def preprocess(document)
+    #   @document = document
+    # end
+    #
+    # def paragraph(content)
+    #   if ['[TOC]', '{:toc}'].include?(content)
+    #     toc_render = Redcarpet::Render::HTML_TOC.new(nesting_level: 2..3)
+    #     parser     = Redcarpet::Markdown.new(toc_render)
+    #
+    #     return parser.render(@document)
+    #   end
+    # end
+
+  end
+
   #A directory containing a package.json, query files and supporting assets
   class Package
     include Helpers
@@ -109,8 +130,10 @@ module OverpassDoc
     end
 
     def render_markdown(src)
-      renderer = Redcarpet::Render::HTML.new({})
-      markdown = Redcarpet::Markdown.new(renderer, {})
+      #renderer = Redcarpet::Render::HTML.new(:with_toc_data => true)
+      renderer = OverpassDoc::CustomHTML.new(:with_toc_data => true)
+
+      markdown = Redcarpet::Markdown.new(renderer, :tables => true, :fenced_code_blocks => true)
       markdown.render(src)
     end
 
